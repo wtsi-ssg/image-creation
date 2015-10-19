@@ -17,7 +17,7 @@ export OS_TENANT_NAME=jb23
 export OS_CLOUDNAME=overcloud
 export OS_AUTH_URL=http://172.31.4.18:5000/v2.0/
 export NOVA_VERSION=1.1
-export OS_PASSWORD=not_my_passwort
+export OS_PASSWORD=not_my_password
 ```
 
 Where all the variables are set approriately.
@@ -45,7 +45,7 @@ The configuration template.json is split in to two parts, Privisioners and Build
     ]
 ```
 
-[More details can be e found in the manual](https://www.packer.io/docs/builders/openstack.html).
+[More details can be found in the manual](https://www.packer.io/docs/builders/openstack.html).
 
 #### flavor
 
@@ -130,7 +130,6 @@ $ nova   secgroup-list-rules 5b07d4d2-770b-4716-9935-a1577982cce4
 +-------------+-----------+---------+-----------+--------------+
 | IP Protocol | From Port | To Port | IP Range  | Source Group |
 +-------------+-----------+---------+-----------+--------------+
-| icmp        | -1        | -1      | 0.0.0.0/0 |              |
 | tcp         | 22        | 22      | 0.0.0.0/0 |              |
 +-------------+-----------+---------+-----------+--------------+
 ```
