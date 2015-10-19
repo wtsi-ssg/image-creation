@@ -1,0 +1,29 @@
+#!/bin/bash
+LOG=/tmp/pack_log.$$
+PACKER_RAW=./packer$$.raw
+PACKER_QCOW=./packer$$.qcow2
+rm -f ${LOG} ${PACKER_RAW} ${PACKER_QCOW}
+packer build -only openstack template.json | tee $LOG
+IMAGEID=`tail -1  $LOG | sed -e 's/.*An image was created: //'`
+if [ -z "${IMAGEID}" ]; then
+  echo "IMAGE not getnerated"
+  exit 1 ;
+fi
+echo Downloading raw image
+if ! glance image-download --progress --file ${PACKER_RAW} ${IMAGEID} ; then
+  echo Error downloading image
+  exit 2
+fi
+echo Converting to QCOW2
+if ! qemu-img convert -f raw -O qcow2 ${PACKER_RAW} ${PACKER_QCOW} ; then
+  echo Error converting image
+  exit 3
+fi
+if ! glance image-create --file ${PACKER_QCOW} --disk-format qcow2 --container-format bare  --progress  --name "Packer example" ; then
+  echo Error uploading image
+  exit 4
+fi
+echo cleaning local file system
+rm ${PACKER_RAW} ${PACKER_QCOW}
+echo cleaning glance
+glance image-delete ${IMAGEID}
