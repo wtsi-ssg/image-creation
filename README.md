@@ -330,7 +330,7 @@ Warning: Permanently added '172.31.11.130' (ECDSA) to the list of known hosts.
 Desired=Unknown/Install/Remove/Purge/Hold
 | Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
 |/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
-||/ Name                             Version                           Description
-+++-================================-=================================-========================
-ii  gcc                              4:4.6.3-1ubuntu5                  GNU C compiler
+||/ Name                    Version                           Description
++++-=======================-=================================-========================
+ii  gcc                     4:4.6.3-1ubuntu5                  GNU C compiler
 ```
