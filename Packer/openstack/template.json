@@ -16,7 +16,8 @@
             "scripts": [
                 "scripts/update.sh",
                 "scripts/sudoers.sh",
-                "scripts/compiler_tools.sh"
+                "scripts/compiler_tools.sh",
+                "scripts/minimize.sh"
             ],
             "type": "shell",
             "execute_command": "sudo bash '{{.Path}}'"
