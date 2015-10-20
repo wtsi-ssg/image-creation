@@ -1,12 +1,12 @@
 # image-creation
 
-The consistency of systems is important both in software development and in science. This repository holds a worked example of using [Packer](https://www.packer.io/) to generate an image. This image can then be deployed easily via Openstack, AWS or Vagrant ( using virtualbox).
+The consistency of systems is important both in software development and in science. This repository holds a worked example of using [Packer](https://www.packer.io/) to generate an image. This image can then be deployed easily via OpenStack, AWS or Vagrant (using virtualbox).
 
-When Packer is used on AWS and Openstack it takes a base image and runs process to arrive at a second useful image. When Packer is run on Vagrant it installs the machine from a ISO file.
+When Packer is used on AWS and OpenStack it takes a base image and runs process to arrive at a second useful image. When Packer is run on Vagrant it installs the machine from a ISO file.
 
 ## Prerequisites
 
-Before trying to use packer with Openstack you need an openstack account and a rc file that has the following form:
+Before trying to use Packer with OpenStack you need an OpenStack account and a rc file that has the following form:
 
 ```
 export OS_NO_CACHE=True
@@ -20,21 +20,21 @@ export NOVA_VERSION=1.1
 export OS_PASSWORD=not_my_password
 ```
 
-Where all the variables are set approriately.
+Where all the variables are set appropriately.
 
-## A walkthough the configuraton
+## A walkthrough the configuration
 
-The configuration template.json is split in to two parts, Privisioners and Builders.
+The configuration template.json is split in to two parts, Provisioners and Builders.
 
 ### Builders
 
-[Builders](https://www.packer.io/docs/templates/builders.html) are used by Packer to build images. In this first example we just consider openstack. The example config is as follows:
+[Builders](https://www.packer.io/docs/templates/builders.html) are used by Packer to build images. In this first example we just consider OpenStack. The example config is as follows:
 
 ```
     "builders": [
         {
             "flavor": "m1.small",
-            "image_name": "ubuntu precise",
+            "image_name": "image built by Packer",
             "source_image": "82b55c8c-cce1-4301-92c4-b005180531de",
             "ssh_username": "ubuntu",
             "use_floating_ip" : "true",
@@ -45,7 +45,7 @@ The configuration template.json is split in to two parts, Privisioners and Build
     ]
 ```
 
-[More details can be found in the manual](https://www.packer.io/docs/builders/openstack.html).
+[More details can be found in the manual.](https://www.packer.io/docs/builders/openstack.html).
 
 #### flavor
 
@@ -75,7 +75,7 @@ The name of the image that packer will directly produce, the create box converts
 
 #### source_image
 
-This is the image to base the new image off, the image id can be found using nova image-list
+This is the image to base the new image off, the image id can be found using nova image-list or glance image-list.
 
 ```
 $ glance image-list
@@ -93,7 +93,7 @@ $ glance image-list
 
 #### ssh_username
 
-Each image uses a different username to log in to the system, ubuntu images use "ubuntu" while redhat systems user "cloud-user" 
+Each image uses a different username to log in to the system, ubuntu images use "ubuntu" while Redhat systems use "cloud-user".
 
 #### security_groups
 
@@ -118,7 +118,7 @@ And can be verified:
 
 
 ```
-$ nova  secgroup-list  
+$ nova secgroup-list
 +--------------------------------------+-----------+------------------------+
 | Id                                   | Name      | Description            |
 +--------------------------------------+-----------+------------------------+
@@ -165,7 +165,7 @@ The file provisioner copies the contents of ./data to /stash in the machine imag
 
 ##### type
 
-This is the type of provisioner in this case shell which runs the scripts in bash, other provisioners such as ansible and salt.
+This is the type of provisioner, in this case shell which runs the scripts in bash. Other provisioners such as Ansible and Salt can be used.
 
 ##### execute_command
 
@@ -177,11 +177,11 @@ This is the template used to execute the command. The following means that the s
 
 ##### scripts
 
-A list of scripts which are copied to the image and executed locally on the image. In this example  we update the packages to the latest version and then configure sudo and then install tools needed to compile packages.
+A list of scripts which are copied to the image and executed locally on the image. In this example we update the packages to the latest version and then configure sudo and then install tools needed to compile packages.
 
 ## Creating an image
 
-First clone the repository
+First clone the repository:
 
 ```
 $ git clone https://github.com/wtsi-ssg/image-creation.git
@@ -220,7 +220,7 @@ openstack output will be in this color.
     openstack: Get:1 http://mirrors.coreix.net/ubuntu/ precise Release.gpg [198 B]
 ```
 
-And ending
+And ending:
 
 ```
 ==> openstack: Uploading ./data/ => /stash
@@ -261,7 +261,7 @@ Converting to QCOW2
 | updated_at       | 2015-10-19T08:24:09.000000           |
 | virtual_size     | None                                 |
 +------------------+--------------------------------------+
-cleaning local file system
-cleaning glance
+Cleaning local file system
+Cleaning glance
 ```
 
