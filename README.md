@@ -1,6 +1,6 @@
 # image-creation
 
-The consistency of systems is important both in software development and in science. This repository holds a worked example of using [Packer](https://www.packer.io/) to generate an image. This image can then be deployed easily via OpenStack, AWS or Vagrant (using virtualbox).
+The consistency of systems is important both in software development and in science. This repository holds a worked example of using [Packer](https://www.packer.io/) to generate an image which contains packages not in the original image (in particular, a compiler). This image can then be deployed easily via OpenStack, AWS or Vagrant (using virtualbox).
 
 When Packer is used on AWS and OpenStack it takes a base image and runs process to arrive at a second useful image. When Packer is run on Vagrant it installs the machine from a ISO file.
 
@@ -265,3 +265,72 @@ Cleaning local file system
 Cleaning glance
 ```
 
+## Using the resulting image
+
+The flavor used to create the instance must be at least as large as
+the flavor used when creating the image.
+
+```
+$ nova boot --image db7294fa-fe33-4b30-84f8-19c585034441 --flavor m1.small --key-name my-keypair --security-groups ssh --poll new-instance
++--------------------------------------+-------------------------------------------------------+
+| Property                             | Value                                                 |
++--------------------------------------+-------------------------------------------------------+
+| OS-DCF:diskConfig                    | MANUAL                                                |
+| OS-EXT-AZ:availability_zone          |                                                       |
+| OS-EXT-STS:power_state               | 0                                                     |
+| OS-EXT-STS:task_state                | scheduling                                            |
+| OS-EXT-STS:vm_state                  | building                                              |
+| OS-SRV-USG:launched_at               | -                                                     |
+| OS-SRV-USG:terminated_at             | -                                                     |
+| accessIPv4                           |                                                       |
+| accessIPv6                           |                                                       |
+| adminPass                            | SeCrEtPaSsWd                                          |
+| config_drive                         |                                                       |
+| created                              | 2015-10-20T10:06:55Z                                  |
+| flavor                               | m1.small (2)                                          |
+| hostId                               |                                                       |
+| id                                   | 647735c5-05ee-4ce7-91dd-2fa5bcb92280                  |
+| image                                | Packer example (db7294fa-fe33-4b30-84f8-19c585034441) |
+| key_name                             | my-keypair                                            |
+| metadata                             | {}                                                    |
+| name                                 | new-instance                                          |
+| os-extended-volumes:volumes_attached | []                                                    |
+| progress                             | 0                                                     |
+| security_groups                      | ssh                                                   |
+| status                               | BUILD                                                 |
+| tenant_id                            | bcdbbb1c394041778a769478086947dc                      |
+| updated                              | 2015-10-20T10:06:55Z                                  |
+| user_id                              | 0a13dd34c2ac4726b55be4c9e3f265a4                      |
++--------------------------------------+-------------------------------------------------------+
+Server building... 0% complete
+Server building... 100% complete
+Finished
+```
+If there is no other instance on that private network to ssh from, then a floating IP address must be
+associated with the new instance so it is reachable from outside the tenant network. The first command
+reserves an IP address from the pool (subject to your quota) and the second ties it to the instance.
+```
+$ nova floating-ip-create
++---------------+-----------+----------+------+
+| Ip            | Server Id | Fixed Ip | Pool |
++---------------+-----------+----------+------+
+| 172.31.11.130 |           | -        | nova |
++---------------+-----------+----------+------+
+$ nova floating-ip-associate 647735c5-05ee-4ce7-91dd-2fa5bcb92280 172.31.11.130
+```
+Finally we can see that the compiler package is already present because Packer embedded it in the image:
+```
+$ ssh -i my-keypair.pem ubuntu@172.31.11.130 dpkg -l gcc
+The authenticity of host '172.31.11.130 (172.31.11.130)' can't be established.
+ECDSA key fingerprint is 6b:82:d1:c9:63:02:a3:40:d9:47:da:08:15:df:55:98.
+No matching host key fingerprint found in DNS.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.31.11.130' (ECDSA) to the list of known hosts.
+/usr/bin/xauth:  file /home/ubuntu/.Xauthority does not exist
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                             Version                           Description
++++-================================-=================================-========================
+ii  gcc                              4:4.6.3-1ubuntu5                  GNU C compiler
+```
