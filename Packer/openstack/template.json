@@ -5,10 +5,10 @@
             "image_name": "ubuntu precise",
             "source_image": "82b55c8c-cce1-4301-92c4-b005180531de",
             "ssh_username": "ubuntu",
-            "use_floating_ip" : "true",
-            "floating_ip_pool" : "nova",
+            "use_floating_ip": "true",
+            "floating_ip_pool": "nova",
             "type": "openstack",
-            "security_groups" : "ssh"
+            "security_groups": "ssh",
         }
     ],
     "provisioners": [

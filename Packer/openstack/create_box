@@ -6,7 +6,7 @@ rm -f ${LOG} ${PACKER_RAW} ${PACKER_QCOW}
 packer build -only openstack template.json | tee $LOG
 IMAGEID=`tail -1  $LOG | sed -e 's/.*An image was created: //'`
 if [ -z "${IMAGEID}" ]; then
-  echo "IMAGE not getnerated"
+  echo "IMAGE not generated"
   exit 1 ;
 fi
 echo Downloading raw image
