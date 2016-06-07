@@ -105,7 +105,7 @@ $ nova secgroup-create ssh "Example ssh security group"
 +--------------------------------------+------+----------------------------+
 | 5b07d4d2-770b-4716-9935-a1577982cce4 | ssh  | Example ssh security group |
 +--------------------------------------+------+----------------------------+
-$ nova secgroup-add-rule ssh1 tcp 22  22 0.0.0.0/0 
+$ nova secgroup-add-rule ssh tcp 22  22 0.0.0.0/0 
 +-------------+-----------+---------+-----------+--------------+
 | IP Protocol | From Port | To Port | IP Range  | Source Group |
 +-------------+-----------+---------+-----------+--------------+
