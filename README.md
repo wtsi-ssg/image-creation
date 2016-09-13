@@ -12,10 +12,10 @@ Before trying to use Packer with OpenStack you need an OpenStack account and a r
 export OS_NO_CACHE=True
 export COMPUTE_API_VERSION=1.1
 export OS_USERNAME=jb23
-export no_proxy=,172.31.4.18
+export no_proxy=,172.31.0.18
 export OS_TENANT_NAME=jb23
 export OS_CLOUDNAME=overcloud
-export OS_AUTH_URL=http://172.31.4.18:5000/v2.0/
+export OS_AUTH_URL=http://172.31.0.18:5000/v2.0/
 export NOVA_VERSION=1.1
 export OS_PASSWORD=not_my_password
 ```
@@ -35,7 +35,7 @@ The configuration template.json is split in to two parts, Provisioners and Build
         {
             "flavor": "m1.small",
             "image_name": "image built by Packer",
-            "source_image": "82b55c8c-cce1-4301-92c4-b005180531de",
+            "source_image": "f1b758c3-8232-486e-ac7a-7d694ab57205",
             "ssh_username": "ubuntu",
             "use_floating_ip" : "true",
             "floating_ip_pool" : "nova",
@@ -79,16 +79,20 @@ This is the image to base the new image off, the image id can be found using nov
 
 ```
 $ glance image-list
-+--------------------------------------+----------------+-------------+------------------+------------+--------+
-| ID                                   | Name           | Disk Format | Container Format | Size       | Status |
-+--------------------------------------+----------------+-------------+------------------+------------+--------+
-| ca3175fb-fc06-47f1-aa47-c68b4ff06a85 | Cirros         | qcow2       | bare             | 13287936   | active |
-| db7294fa-fe33-4b30-84f8-19c585034441 | Packer example | qcow2       | bare             | 2182938624 | active |
-| 6f85f03d-7ed3-4dd6-ab4c-6b3a56975174 | Redhat 7.0     | qcow2       | bare             | 435639808  | active |
-| 62f3a8bf-1fa8-47ae-b18e-d33cb45ed39b | Redhat 7.1     | qcow2       | bare             | 425956864  | active |
-| 82b55c8c-cce1-4301-92c4-b005180531de | Ubuntu precise | qcow2       | bare             | 261030400  | active |
-| 2af24cae-5e24-4981-b565-ff52924c6c04 | ubuntu trusty  | qcow2       | bare             | 258277888  | active |
-+--------------------------------------+----------------+-------------+------------------+------------+--------+
++--------------------------------------+---------------------------------+--------+--------+
+| ID                                   | Name                            | Status | Server |
++--------------------------------------+---------------------------------+--------+--------+
+| c6e2f286-562e-4783-8d6b-beed06382fb4 | CentOS 6                        | ACTIVE |        |
+| 9d932078-d405-454f-9bc6-3398605f32bd | CentOS 7                        | ACTIVE |        |
+| 62313395-5876-439c-9a36-86839ad27195 | Centos 7 (2016-07-29)           | ACTIVE |        |
+| c7f40bc1-8fa7-4f3c-b580-740555ed3f52 | Cirros                          | ACTIVE |        |
+| 13cfb9a3-7162-4088-9c06-f4270cf893ae | Openlava 3.3 20160817110725     | ACTIVE |        |
+| a80b1903-286e-4306-82aa-10d87846afc4 | Precise openlava 20160808125803 | ACTIVE |        |
+| 3abf1b44-cc00-44a1-9c68-6d3923f63ab6 | RHEL 7.2                        | ACTIVE |        |
+| f1b758c3-8232-486e-ac7a-7d694ab57205 | Ubuntu 12.04 Precise            | ACTIVE |        |
+| 8f50f1c3-b094-492b-8c73-191a8f1f5582 | Ubuntu 14.04 Trusty             | ACTIVE |        |
+| 002ca5be-3934-43d3-9d2c-eda816b57019 | Ubuntu 16.04 Xenial             | ACTIVE |        |
++--------------------------------------+---------------------------------+--------+--------+
 ```
 
 #### ssh_username

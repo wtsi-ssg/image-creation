@@ -3,7 +3,7 @@
         {
             "flavor": "m1.small",
             "image_name": "ubuntu precise",
-            "source_image": "82b55c8c-cce1-4301-92c4-b005180531de",
+            "source_image": "f1b758c3-8232-486e-ac7a-7d694ab57205",
             "ssh_username": "ubuntu",
             "use_floating_ip": "true",
             "floating_ip_pool": "nova",
