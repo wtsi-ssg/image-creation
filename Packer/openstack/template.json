@@ -17,6 +17,7 @@
                 "scripts/update.sh",
                 "scripts/sudoers.sh",
                 "scripts/compiler_tools.sh",
+                "scripts/prepare_data.sh",
                 "scripts/minimize.sh"
             ],
             "type": "shell",
